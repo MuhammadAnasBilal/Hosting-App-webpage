@@ -229,16 +229,18 @@
 }
 
 .dropdown-panel__item--highlight {
-  background: linear-gradient(135deg, var(--primary), var(--gradient-warm-mid));
+  justify-content: center;
+  background: var(--primary);
   color: var(--primary-foreground);
   font-weight: var(--weight-semibold);
-  border-radius: var(--radius-sm);
-  margin: var(--space-2) var(--space-2) 0;
+  border-radius: 0;
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
 }
 
 .dropdown-panel__item--highlight:hover {
   filter: brightness(0.92);
-  background: linear-gradient(135deg, var(--primary), var(--gradient-warm-mid));
+  background: var(--primary);
 }
 
 .dropdown-panel__item--highlight svg {
