@@ -29,14 +29,25 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const setTheme = (newTheme: Theme) => {
+  const applyTheme = (newTheme: Theme) => {
+    document.documentElement.classList.add('theme-transition');
     setThemeState(newTheme);
     document.documentElement.setAttribute('data-theme', newTheme);
     localStorage.setItem('hosting-theme', newTheme);
+    
+    // Remove the transition class after the animation completes
+    // so it doesn't make normal hover states feel sluggish
+    setTimeout(() => {
+      document.documentElement.classList.remove('theme-transition');
+    }, 300);
+  };
+
+  const setTheme = (newTheme: Theme) => {
+    if (theme !== newTheme) applyTheme(newTheme);
   };
 
   const toggleTheme = () => {
-    setTheme(theme === 'dark' ? 'light' : 'dark');
+    applyTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
   return (

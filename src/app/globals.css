@@ -145,3 +145,16 @@ input, textarea, select {
   border-radius: inherit;
   z-index: 1;
 }
+
+/* --- Theme Transition (applied dynamically by ThemeContext) --- */
+.theme-transition,
+.theme-transition *,
+.theme-transition *::before,
+.theme-transition *::after {
+  transition: background-color 250ms ease-out, 
+              border-color 250ms ease-out, 
+              color 250ms ease-out, 
+              fill 250ms ease-out, 
+              stroke 250ms ease-out, 
+              box-shadow 250ms ease-out !important;
+}
