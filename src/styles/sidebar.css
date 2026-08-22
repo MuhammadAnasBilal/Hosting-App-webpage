@@ -15,7 +15,6 @@
   border-right: 1px solid var(--border);
   transition: width var(--transition-sidebar);
   z-index: 40;
-  overflow: hidden;
 }
 
 .sidebar--collapsed {
