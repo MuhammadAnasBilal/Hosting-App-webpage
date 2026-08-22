@@ -1,0 +1,354 @@
+/* ============================================================
+   TOP BAR — Header, Dropdowns, Utility Icons
+   ============================================================ */
+
+.topbar {
+  grid-area: topbar;
+  display: flex;
+  align-items: center;
+  height: var(--topbar-height);
+  padding: 0 var(--space-6);
+  background: var(--base-card);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  gap: var(--space-3);
+}
+
+/* --- Mobile hamburger (left side) --- */
+.topbar__hamburger {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  color: var(--base-foreground);
+  transition: background var(--transition-fast);
+}
+
+.topbar__hamburger:hover {
+  background: var(--ghost-hover);
+}
+
+@media (max-width: 639px) {
+  .topbar__hamburger {
+    display: flex;
+  }
+}
+
+/* --- Mobile logo (only shows on mobile) --- */
+.topbar__mobile-logo {
+  display: none;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.topbar__mobile-logo-icon {
+  width: 24px;
+  height: 24px;
+  color: var(--primary);
+}
+
+.topbar__mobile-logo-text {
+  font-size: var(--text-base);
+  font-weight: var(--weight-bold);
+  color: var(--base-foreground);
+}
+
+@media (max-width: 639px) {
+  .topbar__mobile-logo {
+    display: flex;
+  }
+}
+
+/* --- Support PIN badge --- */
+.topbar__support-pin {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  background: var(--secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  color: var(--base-muted-foreground);
+  cursor: default;
+  transition: border-color var(--transition-fast);
+}
+
+.topbar__support-pin:hover {
+  border-color: var(--border-hover);
+}
+
+.topbar__support-pin-icon {
+  width: 14px;
+  height: 14px;
+}
+
+/* --- Spacer --- */
+.topbar__spacer {
+  flex: 1;
+}
+
+/* --- Right-side actions --- */
+.topbar__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+/* --- Generic icon button --- */
+.topbar__icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  color: var(--base-muted-foreground);
+  position: relative;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.topbar__icon-btn:hover {
+  background: var(--ghost-hover);
+  color: var(--base-foreground);
+}
+
+.topbar__icon-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Notification badge dot */
+.topbar__icon-btn--has-badge::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 8px;
+  height: 8px;
+  background: var(--primary);
+  border: 2px solid var(--base-card);
+  border-radius: var(--radius-full);
+}
+
+/* --- Get Rewarded pill --- */
+.topbar__reward-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  background: var(--secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--base-foreground);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.topbar__reward-btn:hover {
+  border-color: var(--primary);
+  background: var(--primary-glow);
+}
+
+.topbar__reward-btn svg {
+  width: 16px;
+  height: 16px;
+  color: var(--primary);
+}
+
+/* --- Avatar button --- */
+.topbar__avatar-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--primary), var(--gradient-warm-mid));
+  color: var(--primary-foreground);
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-xs);
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.topbar__avatar-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 0 2px var(--primary-glow-strong);
+}
+
+/* --- Dropdown panel (shared) --- */
+.dropdown-panel {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  right: 0;
+  min-width: 240px;
+  background: var(--base-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  z-index: 100;
+  animation: scale-in 150ms ease-out;
+  overflow: hidden;
+}
+
+.dropdown-panel__header {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--border);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--base-foreground);
+}
+
+.dropdown-panel__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--base-foreground);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.dropdown-panel__item:hover {
+  background: var(--ghost-hover);
+}
+
+.dropdown-panel__item svg {
+  width: 18px;
+  height: 18px;
+  color: var(--base-muted-foreground);
+  flex-shrink: 0;
+}
+
+.dropdown-panel__item--highlight {
+  background: linear-gradient(135deg, var(--primary), var(--gradient-warm-mid));
+  color: var(--primary-foreground);
+  font-weight: var(--weight-semibold);
+  border-radius: var(--radius-sm);
+  margin: var(--space-2) var(--space-2) 0;
+}
+
+.dropdown-panel__item--highlight:hover {
+  filter: brightness(0.92);
+  background: linear-gradient(135deg, var(--primary), var(--gradient-warm-mid));
+}
+
+.dropdown-panel__item--highlight svg {
+  color: var(--primary-foreground);
+}
+
+.dropdown-panel__separator {
+  height: 1px;
+  background: var(--border);
+  margin: var(--space-1) 0;
+}
+
+.dropdown-panel__footer {
+  padding: var(--space-3) var(--space-4);
+  border-top: 1px solid var(--border);
+}
+
+/* --- Notification panel --- */
+.notification-panel {
+  min-width: 320px;
+  max-width: 380px;
+}
+
+.notification-item {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  border-left: 3px solid transparent;
+}
+
+.notification-item:hover {
+  background: var(--ghost-hover);
+}
+
+.notification-item--unread {
+  border-left-color: var(--primary);
+  background: var(--primary-glow);
+}
+
+.notification-item__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.notification-item__title {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--base-foreground);
+  margin-bottom: 2px;
+}
+
+.notification-item__message {
+  font-size: var(--text-xs);
+  color: var(--base-muted-foreground);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.notification-item__time {
+  font-size: var(--text-xs);
+  color: var(--base-subtle-foreground);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* --- Empty state --- */
+.dropdown-empty {
+  padding: var(--space-8) var(--space-4);
+  text-align: center;
+  color: var(--base-muted-foreground);
+  font-size: var(--text-sm);
+}
+
+.dropdown-empty svg {
+  width: 32px;
+  height: 32px;
+  margin: 0 auto var(--space-3);
+  opacity: 0.5;
+}
+
+/* --- Responsive --- */
+@media (max-width: 639px) {
+  .topbar {
+    padding: 0 var(--space-4);
+  }
+
+  .topbar__support-pin,
+  .topbar__reward-btn {
+    display: none;
+  }
+
+  .dropdown-panel {
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    min-width: 100%;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    max-height: 70vh;
+    overflow-y: auto;
+    animation: slide-in-bottom 200ms ease-out;
+  }
+}
+
+@media (max-width: 1023px) {
+  .topbar__support-pin {
+    display: none;
+  }
+}

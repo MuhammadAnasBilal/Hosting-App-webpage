@@ -1,0 +1,143 @@
+/* ============================================================
+   PROMO BANNER — Gradient cards with grain
+   ============================================================ */
+
+.promo-banner {
+  position: relative;
+  padding: var(--space-8);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-base);
+}
+
+.promo-banner:hover {
+  transform: scale(1.005);
+  box-shadow: 0 0 0 1px var(--primary), 0 0 32px -8px var(--primary-glow-strong);
+}
+
+.promo-banner:focus-visible {
+  outline: 2px solid var(--control-foreground);
+  outline-offset: 2px;
+}
+
+/* --- Primary banner (warm orange gradient) --- */
+.promo-banner--primary {
+  background: linear-gradient(135deg,
+    var(--gradient-warm-start) 0%,
+    var(--gradient-warm-mid) 40%,
+    #D4A843 70%,
+    var(--base-card) 100%
+  );
+}
+
+/* --- Secondary banner (subtle, darker) --- */
+.promo-banner--secondary {
+  background: var(--base-card);
+  border: 1px solid var(--border);
+}
+
+.promo-banner__content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.promo-banner__text {
+  flex: 1;
+  min-width: 0;
+}
+
+.promo-banner__tag {
+  display: inline-block;
+  padding: 2px var(--space-3);
+  background: rgba(0, 0, 0, 0.2);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-3);
+}
+
+.promo-banner--secondary .promo-banner__tag {
+  background: var(--primary-glow);
+  color: var(--primary);
+}
+
+.promo-banner__title {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  color: var(--primary-foreground);
+  margin-bottom: var(--space-2);
+  line-height: var(--leading-tight);
+}
+
+.promo-banner--secondary .promo-banner__title {
+  color: var(--base-foreground);
+}
+
+.promo-banner__description {
+  font-size: var(--text-sm);
+  color: rgba(14, 11, 9, 0.7);
+  line-height: var(--leading-relaxed);
+  max-width: 480px;
+}
+
+.promo-banner--secondary .promo-banner__description {
+  color: var(--base-muted-foreground);
+}
+
+/* --- CTA button on banner --- */
+.promo-banner__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  background: var(--primary-foreground);
+  color: var(--base-foreground);
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-sm);
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+  transition: filter var(--transition-fast), transform var(--transition-fast);
+  cursor: pointer;
+}
+
+.promo-banner__cta:hover {
+  filter: brightness(0.92);
+  transform: scale(0.98);
+}
+
+.promo-banner--secondary .promo-banner__cta {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.promo-banner__cta svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* --- Responsive --- */
+@media (max-width: 639px) {
+  .promo-banner {
+    padding: var(--space-5);
+  }
+
+  .promo-banner__content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .promo-banner__title {
+    font-size: var(--text-lg);
+  }
+
+  .promo-banner__cta {
+    width: 100%;
+    justify-content: center;
+  }
+}

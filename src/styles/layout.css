@@ -1,0 +1,57 @@
+/* ============================================================
+   LAYOUT — Dashboard Grid Shell
+   ============================================================ */
+
+.dashboard-shell {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 1fr;
+  grid-template-rows: var(--topbar-height) 1fr;
+  grid-template-areas:
+    "sidebar topbar"
+    "sidebar main";
+  min-height: 100dvh;
+  transition: grid-template-columns var(--transition-sidebar);
+}
+
+.dashboard-shell--collapsed {
+  grid-template-columns: var(--sidebar-collapsed) 1fr;
+}
+
+/* Main content area */
+.main-content {
+  grid-area: main;
+  padding: var(--space-6);
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: calc(100dvh - var(--topbar-height));
+}
+
+.main-content__inner {
+  max-width: 1200px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* --- Responsive --- */
+@media (max-width: 1023px) {
+  .dashboard-shell {
+    grid-template-columns: var(--sidebar-collapsed) 1fr;
+  }
+}
+
+@media (max-width: 639px) {
+  .dashboard-shell,
+  .dashboard-shell--collapsed {
+    grid-template-columns: 1fr;
+    grid-template-rows: var(--topbar-height) 1fr;
+    grid-template-areas:
+      "topbar"
+      "main";
+  }
+
+  .main-content {
+    padding: var(--space-4);
+  }
+}

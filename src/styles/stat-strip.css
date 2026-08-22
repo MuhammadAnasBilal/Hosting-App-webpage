@@ -1,0 +1,123 @@
+/* ============================================================
+   STAT STRIP — 6-column metrics bar
+   ============================================================ */
+
+.stat-strip {
+  display: flex;
+  background: var(--base-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: border-color var(--transition-fast);
+}
+
+.stat-strip:hover {
+  border-color: var(--border-hover);
+}
+
+.stat-strip__item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-right: 1px solid var(--border);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  position: relative;
+}
+
+.stat-strip__item:last-child {
+  border-right: none;
+}
+
+.stat-strip__item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--primary);
+  transform: scaleX(0);
+  transition: transform var(--transition-base);
+}
+
+.stat-strip__item:hover {
+  background: var(--base-card-hover);
+}
+
+.stat-strip__item:hover::before {
+  transform: scaleX(1);
+}
+
+.stat-strip__icon {
+  width: 20px;
+  height: 20px;
+  color: var(--base-muted-foreground);
+  flex-shrink: 0;
+  transition: color var(--transition-fast);
+}
+
+.stat-strip__item:hover .stat-strip__icon {
+  color: var(--primary);
+}
+
+.stat-strip__info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.stat-strip__label {
+  font-size: var(--text-xs);
+  color: var(--base-muted-foreground);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stat-strip__count {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  color: var(--base-foreground);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Responsive: horizontal scroll on mobile --- */
+@media (max-width: 639px) {
+  .stat-strip {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .stat-strip__item {
+    min-width: 160px;
+    scroll-snap-align: start;
+    flex-shrink: 0;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  .stat-strip {
+    flex-wrap: wrap;
+  }
+
+  .stat-strip__item {
+    flex: 0 0 33.333%;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .stat-strip__item:nth-child(3) {
+    border-right: none;
+  }
+
+  .stat-strip__item:nth-child(n+4) {
+    border-bottom: none;
+  }
+
+  .stat-strip__item:last-child {
+    border-right: none;
+  }
+}
