@@ -10,6 +10,8 @@ import { SupportTickets } from '@/components/dashboard/SupportTickets';
 import { HelpCentre } from '@/components/dashboard/HelpCentre';
 import { OrbiChat } from '@/components/chat/OrbiChat';
 
+import { Footer } from '@/components/layout/Footer';
+
 export default function HomePage() {
   return (
     <DashboardShell>
@@ -22,6 +24,7 @@ export default function HomePage() {
         <SupportTickets />
         <HelpCentre />
       </div>
+      <Footer />
       <OrbiChat />
     </DashboardShell>
   );

@@ -33,16 +33,7 @@ export function TopBar({ onMenuClick, showHamburger }: TopBarProps) {
 
   return (
     <header className="topbar" role="banner">
-      {/* Mobile hamburger */}
-      {showHamburger && (
-        <button
-          className="topbar__hamburger"
-          onClick={onMenuClick}
-          aria-label="Open navigation menu"
-        >
-          <Menu size={22} />
-        </button>
-      )}
+
 
       {/* Mobile logo */}
       {showHamburger && (

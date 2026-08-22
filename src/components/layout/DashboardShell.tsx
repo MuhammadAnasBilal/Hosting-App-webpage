@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { Sidebar } from './Sidebar';
 import { TopBar } from './TopBar';
 import { MobileDrawer } from './MobileDrawer';
@@ -16,6 +16,12 @@ export function DashboardShell({ children }: DashboardShellProps) {
   const isMobile = useIsMobile();
   const [collapsed, setCollapsed] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
+
+  useEffect(() => {
+    const handleOpen = () => setDrawerOpen(true);
+    window.addEventListener('openMobileDrawer', handleOpen);
+    return () => window.removeEventListener('openMobileDrawer', handleOpen);
+  }, []);
 
   const toggleSidebar = useCallback(() => {
     if (isMobile) {
