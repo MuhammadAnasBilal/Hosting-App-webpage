@@ -39,7 +39,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     // so it doesn't make normal hover states feel sluggish
     setTimeout(() => {
       document.documentElement.classList.remove('theme-transition');
-    }, 300);
+    }, 150);
   };
 
   const setTheme = (newTheme: Theme) => {

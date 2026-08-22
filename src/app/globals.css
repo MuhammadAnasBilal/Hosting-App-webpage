@@ -151,10 +151,10 @@ input, textarea, select {
 .theme-transition *,
 .theme-transition *::before,
 .theme-transition *::after {
-  transition: background-color 250ms ease-out, 
-              border-color 250ms ease-out, 
-              color 250ms ease-out, 
-              fill 250ms ease-out, 
-              stroke 250ms ease-out, 
-              box-shadow 250ms ease-out !important;
+  transition: background-color 150ms ease-out, 
+              border-color 150ms ease-out, 
+              color 150ms ease-out, 
+              fill 150ms ease-out, 
+              stroke 150ms ease-out, 
+              box-shadow 150ms ease-out !important;
 }
