@@ -28,8 +28,8 @@ interface SidebarProps {
 }
 
 export function Sidebar({ collapsed, onToggleCollapse }: SidebarProps) {
-  const [productsOpen, setProductsOpen] = useState(productsGroup.defaultOpen ?? true);
-  const [billingOpen, setBillingOpen] = useState(billingGroup.defaultOpen ?? false);
+  const [productsOpen, setProductsOpen] = useState(false);
+  const [billingOpen, setBillingOpen] = useState(false);
   const [activeId, setActiveId] = useState('home');
 
   return (

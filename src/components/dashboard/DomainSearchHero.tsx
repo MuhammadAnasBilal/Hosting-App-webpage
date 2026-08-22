@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { Search, Lightbulb, ShoppingCart } from 'lucide-react';
+import { Search, Lightbulb, ShoppingCart, Sparkles } from 'lucide-react';
 import { tldCards, domainCategories, mockDomainResults } from '@/data/mockData';
 import '@/styles/domain-search.css';
 
@@ -62,7 +62,7 @@ export function DomainSearchHero() {
             onClick={handleSearch}
             aria-label="Search"
           >
-            <Search />
+            {ideaMode ? <Sparkles /> : <Search />}
           </button>
         </div>
 
