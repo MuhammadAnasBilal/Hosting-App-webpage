@@ -78,15 +78,18 @@ export function TopBar({ onMenuClick, showHamburger }: TopBarProps) {
           </button>
           {activeDropdown === 'reward' && (
             <div className="dropdown-panel" role="menu">
+              <div className="dropdown-panel__grabber" onClick={closeAll} />
               <div className="dropdown-panel__header">Refer & Earn</div>
-              <div style={{ padding: 'var(--space-4)' }}>
-                <p style={{ fontSize: 'var(--text-sm)', color: 'var(--base-muted-foreground)', marginBottom: 'var(--space-3)', lineHeight: 'var(--leading-relaxed)' }}>
-                  Invite friends to hosting.com and <strong style={{ color: 'var(--primary)', fontWeight: 'var(--weight-bold)' as unknown as number }}>earn credits</strong> for every successful referral.
-                </p>
-                <button className="dropdown-panel__item dropdown-panel__item--highlight" role="menuitem">
-                  <Gift size={18} />
-                  <span>Start earning rewards</span>
-                </button>
+              <div className="dropdown-panel__content">
+                <div style={{ padding: 'var(--space-4)' }}>
+                  <p style={{ fontSize: 'var(--text-sm)', color: 'var(--base-muted-foreground)', marginBottom: 'var(--space-3)', lineHeight: 'var(--leading-relaxed)' }}>
+                    Invite friends to hosting.com and <strong style={{ color: 'var(--primary)', fontWeight: 'var(--weight-bold)' as unknown as number }}>earn credits</strong> for every successful referral.
+                  </p>
+                  <button className="dropdown-panel__item dropdown-panel__item--highlight" role="menuitem">
+                    <Gift size={18} />
+                    <span>Start earning rewards</span>
+                  </button>
+                </div>
               </div>
             </div>
           )}
@@ -105,23 +108,37 @@ export function TopBar({ onMenuClick, showHamburger }: TopBarProps) {
           </button>
           {activeDropdown === 'help' && (
             <div className="dropdown-panel" role="menu">
-              <button className="dropdown-panel__item dropdown-panel__item--highlight" role="menuitem">
-                <MessageSquare size={18} />
-                <span>Live chat</span>
-              </button>
-              <div className="dropdown-panel__separator" />
-              <button className="dropdown-panel__item" role="menuitem">
-                <BookOpen size={18} />
-                <span>Knowledge base</span>
-              </button>
-              <button className="dropdown-panel__item" role="menuitem">
-                <ListChecks size={18} />
-                <span>Manage tickets</span>
-              </button>
-              <button className="dropdown-panel__item" role="menuitem">
-                <FilePlus size={18} />
-                <span>Create a ticket</span>
-              </button>
+              <div className="dropdown-panel__grabber" onClick={closeAll} />
+              <div className="dropdown-panel__header">Help & Support</div>
+              <div className="dropdown-panel__content">
+                <button className="dropdown-panel__item" role="menuitem">
+                  <BookOpen size={18} />
+                  <span>Knowledge base</span>
+                </button>
+                <button className="dropdown-panel__item" role="menuitem">
+                  <ListChecks size={18} />
+                  <span>Manage tickets</span>
+                </button>
+                <button className="dropdown-panel__item" role="menuitem">
+                  <FilePlus size={18} />
+                  <span>Create a ticket</span>
+                </button>
+              </div>
+              <div className="dropdown-panel__footer">
+                <button className="dropdown-panel__footer-btn dropdown-panel__footer-btn--ghost" onClick={closeAll}>Cancel</button>
+                <button 
+                  className="dropdown-panel__footer-btn dropdown-panel__footer-btn--primary"
+                  onClick={() => {
+                    closeAll();
+                    window.dispatchEvent(new CustomEvent('open-orbi'));
+                  }}
+                  onPointerDown={(e) => e.currentTarget.style.backgroundColor = 'var(--ghost-hover)'}
+                  onPointerUp={(e) => e.currentTarget.style.backgroundColor = ''}
+                  onPointerLeave={(e) => e.currentTarget.style.backgroundColor = ''}
+                >
+                  Live Chat
+                </button>
+              </div>
             </div>
           )}
         </div>
@@ -139,27 +156,41 @@ export function TopBar({ onMenuClick, showHamburger }: TopBarProps) {
           </button>
           {activeDropdown === 'notifications' && (
             <div className="dropdown-panel notification-panel" role="menu">
-              <div className="dropdown-panel__header">Notifications</div>
-              {mockNotifications.length > 0 ? (
-                mockNotifications.map(notif => (
-                  <div
-                    key={notif.id}
-                    className={`notification-item ${!notif.read ? 'notification-item--unread' : ''}`}
-                    role="menuitem"
-                  >
-                    <div className="notification-item__content">
-                      <div className="notification-item__title">{notif.title}</div>
-                      <div className="notification-item__message">{notif.message}</div>
-                    </div>
-                    <span className="notification-item__time">{notif.time}</span>
-                  </div>
-                ))
-              ) : (
-                <div className="dropdown-empty">
-                  <Bell />
-                  <p>No new notifications</p>
+              <div className="dropdown-panel__grabber" onClick={closeAll} />
+              <div className="dropdown-panel__header">
+                Notifications
+                <div className="dropdown-panel__tabs">
+                  <div className="dropdown-panel__tab dropdown-panel__tab--active">All ({mockNotifications.length})</div>
+                  <div className="dropdown-panel__tab">Unread ({mockNotifications.filter(n => !n.read).length})</div>
+                  <div className="dropdown-panel__tab">Read ({mockNotifications.filter(n => n.read).length})</div>
                 </div>
-              )}
+              </div>
+              <div className="dropdown-panel__content">
+                {mockNotifications.length > 0 ? (
+                  mockNotifications.map(notif => (
+                    <div
+                      key={notif.id}
+                      className={`notification-item ${!notif.read ? 'notification-item--unread' : ''}`}
+                      role="menuitem"
+                    >
+                      <div className="notification-item__content">
+                        <div className="notification-item__title">{notif.title}</div>
+                        <div className="notification-item__message">{notif.message}</div>
+                      </div>
+                      <span className="notification-item__time">{notif.time}</span>
+                    </div>
+                  ))
+                ) : (
+                  <div className="dropdown-empty">
+                    <Bell />
+                    <p>No new notifications</p>
+                  </div>
+                )}
+              </div>
+              <div className="dropdown-panel__footer">
+                <button className="dropdown-panel__footer-btn dropdown-panel__footer-btn--ghost" onClick={closeAll}>Close</button>
+                <button className="dropdown-panel__footer-btn dropdown-panel__footer-btn--primary">Refresh</button>
+              </div>
             </div>
           )}
         </div>
@@ -188,20 +219,23 @@ export function TopBar({ onMenuClick, showHamburger }: TopBarProps) {
           </button>
           {activeDropdown === 'profile' && (
             <div className="dropdown-panel" role="menu">
+              <div className="dropdown-panel__grabber" onClick={closeAll} />
               <div className="dropdown-panel__header">Anas Bilal</div>
-              <button className="dropdown-panel__item" role="menuitem">
-                <User size={18} />
-                <span>Profile</span>
-              </button>
-              <button className="dropdown-panel__item" role="menuitem">
-                <Settings size={18} />
-                <span>Settings</span>
-              </button>
-              <div className="dropdown-panel__separator" />
-              <button className="dropdown-panel__item" role="menuitem">
-                <LogOut size={18} />
-                <span>Log out</span>
-              </button>
+              <div className="dropdown-panel__content">
+                <button className="dropdown-panel__item" role="menuitem">
+                  <User size={18} />
+                  <span>Profile</span>
+                </button>
+                <button className="dropdown-panel__item" role="menuitem">
+                  <Settings size={18} />
+                  <span>Settings</span>
+                </button>
+                <div className="dropdown-panel__separator" />
+                <button className="dropdown-panel__item" role="menuitem">
+                  <LogOut size={18} />
+                  <span>Log out</span>
+                </button>
+              </div>
             </div>
           )}
         </div>

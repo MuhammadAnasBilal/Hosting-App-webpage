@@ -26,6 +26,12 @@ export function OrbiChat() {
     if (isOpen) scrollToBottom();
   }, [messages, isOpen]);
 
+  useEffect(() => {
+    const handleOpen = () => setIsOpen(true);
+    window.addEventListener('open-orbi', handleOpen);
+    return () => window.removeEventListener('open-orbi', handleOpen);
+  }, []);
+
   const sendMessage = useCallback(() => {
     if (!input.trim()) return;
 
