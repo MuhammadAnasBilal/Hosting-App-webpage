@@ -18,6 +18,12 @@ export function OrbiChat() {
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  // Drag-to-close state
+  const [translateY, setTranslateY] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const startY = useRef(0);
+  const currentY = useRef(0);
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -31,6 +37,38 @@ export function OrbiChat() {
     window.addEventListener('open-orbi', handleOpen);
     return () => window.removeEventListener('open-orbi', handleOpen);
   }, []);
+
+  // Reset drag position when panel closes/opens
+  useEffect(() => {
+    if (!isOpen) {
+      setTranslateY(0);
+      setIsDragging(false);
+    }
+  }, [isOpen]);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    startY.current = e.touches[0].clientY;
+    currentY.current = e.touches[0].clientY;
+    setIsDragging(true);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    currentY.current = e.touches[0].clientY;
+    const deltaY = currentY.current - startY.current;
+    if (deltaY > 0) {
+      setTranslateY(deltaY);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+    const deltaY = currentY.current - startY.current;
+    if (deltaY > 100) {
+      setIsOpen(false);
+    } else {
+      setTranslateY(0);
+    }
+  };
 
   const sendMessage = useCallback(() => {
     if (!input.trim()) return;
@@ -80,7 +118,25 @@ export function OrbiChat() {
   }
 
   return (
-    <div className="chat-panel" role="dialog" aria-label="Chat with Orbi">
+    <div
+      className="chat-panel"
+      role="dialog"
+      aria-label="Chat with Orbi"
+      style={{
+        transform: `translateY(${translateY}px)`,
+        transition: isDragging ? 'none' : 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+      }}
+    >
+      {/* Drag Handle — visible on mobile */}
+      <div
+        className="chat-panel__drag-area"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        <div className="chat-panel__grabber" />
+      </div>
+
       {/* Header */}
       <div className="chat-panel__header">
         <div className="chat-panel__avatar">

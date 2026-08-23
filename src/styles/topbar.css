@@ -468,26 +468,13 @@
   }
 
   .dropdown-panel {
-    position: fixed;
-    top: auto;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    min-width: 100%;
-    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-    height: 75vh;
-    animation: slide-in-bottom 200ms cubic-bezier(0.16, 1, 0.3, 1);
+    /* On mobile, all panels are now handled by BottomSheet component */
+    display: none;
   }
 
   .dropdown-panel__grabber {
-    display: block;
-    width: 36px;
-    height: 5px;
-    background: var(--border);
-    border-radius: var(--radius-full);
-    margin: var(--space-2) auto 0;
+    display: none;
   }
-}
 
 @media (max-width: 1023px) {
   .topbar__support-pin {

@@ -20,6 +20,7 @@ interface TopBarProps {
 export function TopBar({ onMenuClick, showHamburger }: TopBarProps) {
   const { theme, toggleTheme } = useTheme();
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [activeNotifTab, setActiveNotifTab] = useState<'all' | 'unread' | 'read'>('all');
 
   const closeAll = useCallback(() => setActiveDropdown(null), []);
 
@@ -95,7 +96,7 @@ export function TopBar({ onMenuClick, showHamburger }: TopBarProps) {
         </div>
 
         {/* Help */}
-        <div style={{ position: 'relative' }} ref={helpRef}>
+        <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }} ref={helpRef}>
           <button
             className="topbar__icon-btn"
             onClick={() => toggleDropdown('help')}
@@ -161,9 +162,24 @@ export function TopBar({ onMenuClick, showHamburger }: TopBarProps) {
               <>
                 Notifications
                 <div className="dropdown-panel__tabs">
-                  <div className="dropdown-panel__tab dropdown-panel__tab--active">All ({mockNotifications.length})</div>
-                  <div className="dropdown-panel__tab">Unread ({mockNotifications.filter(n => !n.read).length})</div>
-                  <div className="dropdown-panel__tab">Read ({mockNotifications.filter(n => n.read).length})</div>
+                  <div 
+                    className={`dropdown-panel__tab ${activeNotifTab === 'all' ? 'dropdown-panel__tab--active' : ''}`}
+                    onClick={() => setActiveNotifTab('all')}
+                  >
+                    All ({mockNotifications.length})
+                  </div>
+                  <div 
+                    className={`dropdown-panel__tab ${activeNotifTab === 'unread' ? 'dropdown-panel__tab--active' : ''}`}
+                    onClick={() => setActiveNotifTab('unread')}
+                  >
+                    Unread ({mockNotifications.filter(n => !n.read).length})
+                  </div>
+                  <div 
+                    className={`dropdown-panel__tab ${activeNotifTab === 'read' ? 'dropdown-panel__tab--active' : ''}`}
+                    onClick={() => setActiveNotifTab('read')}
+                  >
+                    Read ({mockNotifications.filter(n => n.read).length})
+                  </div>
                 </div>
               </>
             }
@@ -174,26 +190,33 @@ export function TopBar({ onMenuClick, showHamburger }: TopBarProps) {
               </>
             }
           >
-            {mockNotifications.length > 0 ? (
-              mockNotifications.map(notif => (
-                <div
-                  key={notif.id}
-                  className={`notification-item ${!notif.read ? 'notification-item--unread' : ''}`}
-                  role="menuitem"
-                >
-                  <div className="notification-item__content">
-                    <div className="notification-item__title">{notif.title}</div>
-                    <div className="notification-item__message">{notif.message}</div>
+            {(() => {
+              const filtered = activeNotifTab === 'unread'
+                ? mockNotifications.filter(n => !n.read)
+                : activeNotifTab === 'read'
+                  ? mockNotifications.filter(n => n.read)
+                  : mockNotifications;
+              return filtered.length > 0 ? (
+                filtered.map(notif => (
+                  <div
+                    key={notif.id}
+                    className={`notification-item ${!notif.read ? 'notification-item--unread' : ''}`}
+                    role="menuitem"
+                  >
+                    <div className="notification-item__content">
+                      <div className="notification-item__title">{notif.title}</div>
+                      <div className="notification-item__message">{notif.message}</div>
+                    </div>
+                    <span className="notification-item__time">{notif.time}</span>
                   </div>
-                  <span className="notification-item__time">{notif.time}</span>
+                ))
+              ) : (
+                <div className="dropdown-empty">
+                  <Bell />
+                  <p>No notifications in this category</p>
                 </div>
-              ))
-            ) : (
-              <div className="dropdown-empty">
-                <Bell />
-                <p>No new notifications</p>
-              </div>
-            )}
+              );
+            })()}
           </DropdownPanel>
         </div>
 
