@@ -12,7 +12,7 @@
   border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
-  z-index: 30;
+  z-index: 60;
   gap: var(--space-3);
 }
 
@@ -200,7 +200,7 @@
 }
 
 .dropdown-panel__header {
-  padding: var(--space-3) var(--space-4);
+  padding: var(--space-2) var(--space-4);
   border-bottom: 1px solid var(--border);
   font-size: var(--text-sm);
   font-weight: var(--weight-semibold);

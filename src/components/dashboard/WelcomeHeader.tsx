@@ -6,13 +6,6 @@ export function WelcomeHeader() {
   return (
     <div className="welcome-header">
       <div className="welcome-header__left">
-        <button 
-          className="welcome-header__hamburger"
-          onClick={() => window.dispatchEvent(new Event('openMobileDrawer'))}
-          aria-label="Open menu"
-        >
-          <Menu size={22} />
-        </button>
         <h1 className="welcome-header__title">
           Welcome back, <span className="welcome-header__name">Anas Bilal</span>
         </h1>
@@ -42,23 +35,6 @@ export function WelcomeHeader() {
           gap: var(--space-3);
           flex: 1;
           min-width: 0;
-        }
-        .welcome-header__hamburger {
-          display: none;
-          align-items: center;
-          justify-content: center;
-          width: 36px;
-          height: 36px;
-          border-radius: var(--radius-sm);
-          color: var(--base-foreground);
-          background: transparent;
-          border: none;
-          cursor: pointer;
-          flex-shrink: 0;
-          transition: background var(--transition-fast);
-        }
-        .welcome-header__hamburger:hover {
-          background: var(--ghost-hover);
         }
         .welcome-header__title {
           font-size: var(--text-3xl);
@@ -114,9 +90,6 @@ export function WelcomeHeader() {
             flex-direction: row;
             flex-wrap: nowrap;
             gap: var(--space-2);
-          }
-          .welcome-header__hamburger {
-            display: flex;
           }
           .welcome-header__title {
             font-size: var(--text-lg);
