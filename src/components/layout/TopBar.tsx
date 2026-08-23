@@ -49,11 +49,10 @@ export function TopBar({ onMenuClick, showHamburger }: TopBarProps) {
       {showHamburger && (
         <div className="topbar__mobile-logo">
           <svg className="topbar__mobile-logo-icon" viewBox="0 0 32 32" fill="none">
-            <circle cx="16" cy="16" r="14" stroke="currentColor" strokeWidth="2.5" />
-            <path d="M10 16c0-3.3 2.7-6 6-6s6 2.7 6 6-2.7 6-6 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-            <circle cx="16" cy="16" r="2" fill="currentColor" />
+            <rect width="32" height="32" rx="8" fill="currentColor" />
+            <path d="M10 10v12 M10 16h6 M16 10v12 M22 14v8 M22 10v2" stroke="var(--base-card)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-          <span className="topbar__mobile-logo-text">hosting.com</span>
+          <span className="topbar__mobile-logo-text">Hostin</span>
         </div>
       )}
 
@@ -94,7 +93,7 @@ export function TopBar({ onMenuClick, showHamburger }: TopBarProps) {
         </div>
 
         {/* Help */}
-        <div style={{ position: 'relative' }} ref={helpRef}>
+        <div style={{ position: 'relative' }} ref={helpRef} className="topbar__hide-on-mobile">
           <button
             className="topbar__icon-btn"
             onClick={() => toggleDropdown('help')}
@@ -167,12 +166,14 @@ export function TopBar({ onMenuClick, showHamburger }: TopBarProps) {
 
         {/* Theme toggle */}
         <button
-          className="topbar__icon-btn"
+          className="topbar__icon-btn topbar__hide-on-mobile"
           onClick={toggleTheme}
           aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
         >
           {theme === 'dark' ? <Sun /> : <Moon />}
         </button>
+
+        <div className="topbar__divider" />
 
         {/* Profile */}
         <div style={{ position: 'relative' }} ref={profileRef}>
@@ -196,6 +197,17 @@ export function TopBar({ onMenuClick, showHamburger }: TopBarProps) {
                 <Settings size={18} />
                 <span>Settings</span>
               </button>
+              <div className="dropdown-panel__mobile-only">
+                <div className="dropdown-panel__separator" />
+                <button className="dropdown-panel__item" role="menuitem">
+                  <HelpCircle size={18} />
+                  <span>Help & Support</span>
+                </button>
+                <button className="dropdown-panel__item" role="menuitem" onClick={toggleTheme}>
+                  {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+                  <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+                </button>
+              </div>
               <div className="dropdown-panel__separator" />
               <button className="dropdown-panel__item" role="menuitem">
                 <LogOut size={18} />

@@ -40,11 +40,10 @@ export function Sidebar({ collapsed, onToggleCollapse }: SidebarProps) {
       {/* Logo */}
       <div className="sidebar__logo">
         <svg className="sidebar__logo-icon" viewBox="0 0 32 32" fill="none">
-          <circle cx="16" cy="16" r="14" stroke="currentColor" strokeWidth="2.5" />
-          <path d="M10 16c0-3.3 2.7-6 6-6s6 2.7 6 6-2.7 6-6 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-          <circle cx="16" cy="16" r="2" fill="currentColor" />
+          <rect width="32" height="32" rx="8" fill="currentColor" />
+          <path d="M10 10v12 M10 16h6 M16 10v12 M22 14v8 M22 10v2" stroke="var(--base-card)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
-        <span className="sidebar__logo-text">hosting.com</span>
+        <span className="sidebar__logo-text">Hostin</span>
       </div>
 
       {/* Place new order CTA */}

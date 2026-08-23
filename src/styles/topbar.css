@@ -92,20 +92,30 @@
   flex: 1;
 }
 
-/* --- Right-side actions --- */
 .topbar__actions {
   display: flex;
   align-items: center;
-  gap: var(--space-1);
+  gap: var(--space-2);
 }
 
-/* --- Generic icon button --- */
+/* --- Utilities & Separator --- */
+.topbar__divider {
+  width: 1px;
+  height: 24px;
+  background: var(--border);
+  margin: 0 var(--space-1);
+}
+
+.topbar__hide-on-mobile {
+  display: flex;
+}
+
 .topbar__icon-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border-radius: var(--radius-sm);
   color: var(--base-muted-foreground);
   position: relative;
@@ -167,8 +177,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   border-radius: var(--radius-full);
   background: linear-gradient(135deg, var(--primary), var(--gradient-warm-mid));
   color: var(--primary-foreground);
@@ -197,6 +207,10 @@
   animation: scale-in 150ms ease-out;
   overflow: hidden;
   padding-bottom: var(--space-2);
+}
+
+.dropdown-panel__mobile-only {
+  display: none;
 }
 
 .dropdown-panel__header {
@@ -342,8 +356,24 @@
   }
 
   .topbar__support-pin,
-  .topbar__reward-btn {
+  .topbar__reward-btn,
+  .topbar__hide-on-mobile,
+  .topbar__divider {
     display: none;
+  }
+
+  .dropdown-panel__mobile-only {
+    display: block;
+  }
+
+  .topbar__icon-btn {
+    width: 44px;
+    height: 44px;
+  }
+
+  .topbar__avatar-btn {
+    width: 40px;
+    height: 40px;
   }
 
   .dropdown-panel {
