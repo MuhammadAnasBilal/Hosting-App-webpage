@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { X } from 'lucide-react';
 import { Sidebar } from './Sidebar';
 
@@ -11,6 +11,44 @@ interface MobileDrawerProps {
 
 export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
   const drawerRef = useRef<HTMLDivElement>(null);
+  const [translateX, setTranslateX] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const startX = useRef(0);
+  const currentX = useRef(0);
+
+  useEffect(() => {
+    if (!isOpen) {
+      setTranslateX(0);
+      setIsDragging(false);
+    }
+  }, [isOpen]);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    startX.current = e.touches[0].clientX;
+    currentX.current = e.touches[0].clientX;
+    setIsDragging(true);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    currentX.current = e.touches[0].clientX;
+    const deltaX = currentX.current - startX.current;
+    
+    // Only allow dragging left to close
+    if (deltaX < 0) {
+      setTranslateX(deltaX);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+    const deltaX = currentX.current - startX.current;
+    
+    if (deltaX < -50) {
+      onClose(); // Close sidebar
+    } else {
+      setTranslateX(0); // Reset visual position
+    }
+  };
 
   useEffect(() => {
     if (!isOpen) return;
@@ -36,7 +74,17 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
         aria-hidden="true"
       />
       {/* Drawer panel */}
-      <div className="mobile-drawer" ref={drawerRef}>
+      <div 
+        className="mobile-drawer" 
+        ref={drawerRef}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        style={{
+          transform: translateX < 0 ? `translateX(${translateX}px)` : undefined,
+          transition: isDragging ? 'none' : 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), width 0.3s ease'
+        }}
+      >
         <Sidebar collapsed={false} onToggleCollapse={onClose} />
       </div>
 

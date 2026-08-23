@@ -96,7 +96,7 @@ export function TopBar({ onMenuClick, showHamburger }: TopBarProps) {
         </div>
 
         {/* Help */}
-        <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }} ref={helpRef}>
+        <div style={{ position: 'relative', display: 'flex', alignItems: 'center', marginLeft: '6px' }} ref={helpRef}>
           <button
             className="topbar__icon-btn"
             onClick={() => toggleDropdown('help')}

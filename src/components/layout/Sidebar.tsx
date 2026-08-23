@@ -34,46 +34,10 @@ export function Sidebar({ collapsed, onToggleCollapse }: SidebarProps) {
   const [billingOpen, setBillingOpen] = useState(false);
   const [activeId, setActiveId] = useState('home');
 
-  // Swipe to close on mobile
-  const startX = useRef(0);
-  const currentX = useRef(0);
-  const [translateX, setTranslateX] = useState(0);
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    startX.current = e.touches[0].clientX;
-    currentX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    currentX.current = e.touches[0].clientX;
-    const deltaX = currentX.current - startX.current;
-    
-    // Only allow dragging left to close
-    if (deltaX < 0) {
-      setTranslateX(deltaX);
-    }
-  };
-
-  const handleTouchEnd = () => {
-    const deltaX = currentX.current - startX.current;
-    
-    if (deltaX < -50) {
-      onToggleCollapse(); // Close sidebar
-    }
-    setTranslateX(0); // Reset visual position regardless of outcome
-  };
-
   return (
     <aside
       className={`sidebar ${collapsed ? 'sidebar--collapsed' : ''}`}
       aria-label="Main navigation"
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-      style={{
-        transform: translateX < 0 ? `translateX(${translateX}px)` : undefined,
-        transition: translateX < 0 ? 'none' : 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), width 0.3s ease'
-      }}
     >
       {/* Logo */}
       <div className="sidebar__logo">
