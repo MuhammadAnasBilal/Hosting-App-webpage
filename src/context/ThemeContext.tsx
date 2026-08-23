@@ -31,17 +31,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   const setTheme = (newTheme: Theme) => {
     if (typeof window === 'undefined') return;
-
-    const root = document.documentElement;
-    root.classList.add('theme-transition');
-
     setThemeState(newTheme);
     localStorage.setItem('hosting-theme', newTheme);
-    root.setAttribute('data-theme', newTheme);
-
-    window.setTimeout(() => {
-      root.classList.remove('theme-transition');
-    }, 300);
+    document.documentElement.setAttribute('data-theme', newTheme);
   };
 
   const toggleTheme = () => {
