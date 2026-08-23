@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import {
   Home, Mail, Layers, Package, Globe, AtSign, Server, Inbox,
   Cpu, MoreHorizontal, Network, Zap, Sparkles, Receipt,
@@ -34,16 +34,49 @@ export function Sidebar({ collapsed, onToggleCollapse }: SidebarProps) {
   const [billingOpen, setBillingOpen] = useState(false);
   const [activeId, setActiveId] = useState('home');
 
+  // Swipe to close on mobile
+  const startX = useRef(0);
+  const currentX = useRef(0);
+  const [translateX, setTranslateX] = useState(0);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    startX.current = e.touches[0].clientX;
+    currentX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    currentX.current = e.touches[0].clientX;
+    const deltaX = currentX.current - startX.current;
+    
+    // Only allow dragging left to close
+    if (deltaX < 0) {
+      setTranslateX(deltaX);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    const deltaX = currentX.current - startX.current;
+    
+    if (deltaX < -50) {
+      onToggleCollapse(); // Close sidebar
+    }
+    setTranslateX(0); // Reset visual position regardless of outcome
+  };
+
   return (
     <aside
       className={`sidebar ${collapsed ? 'sidebar--collapsed' : ''}`}
       aria-label="Main navigation"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      style={{
+        transform: translateX < 0 ? `translateX(${translateX}px)` : undefined,
+        transition: translateX < 0 ? 'none' : 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), width 0.3s ease'
+      }}
     >
       {/* Logo */}
       <div className="sidebar__logo">
-        <button className="sidebar__mobile-close" onClick={onToggleCollapse} aria-label="Close menu">
-          <Menu size={22} />
-        </button>
         <svg className="sidebar__logo-icon" viewBox="0 0 32 32" fill="none">
           <rect width="32" height="32" rx="8" fill="currentColor" />
           <path d="M10 10v12 M10 16h6 M16 10v12 M22 14v8 M22 10v2" stroke="var(--base-card)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />

@@ -375,9 +375,11 @@
 }
 
 /* --- Notification panel --- */
-.notification-panel {
-  min-width: 320px;
-  max-width: 380px;
+@media (min-width: 640px) {
+  .notification-panel {
+    min-width: 320px;
+    max-width: 380px;
+  }
 }
 
 .notification-item {
