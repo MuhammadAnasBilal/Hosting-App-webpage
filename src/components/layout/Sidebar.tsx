@@ -41,6 +41,9 @@ export function Sidebar({ collapsed, onToggleCollapse }: SidebarProps) {
     >
       {/* Logo */}
       <div className="sidebar__logo">
+        <button className="sidebar__mobile-close" onClick={onToggleCollapse} aria-label="Close menu">
+          <Menu size={22} />
+        </button>
         <svg className="sidebar__logo-icon" viewBox="0 0 32 32" fill="none">
           <rect width="32" height="32" rx="8" fill="currentColor" />
           <path d="M10 10v12 M10 16h6 M16 10v12 M22 14v8 M22 10v2" stroke="var(--base-card)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
