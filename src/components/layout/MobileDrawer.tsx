@@ -33,7 +33,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
       onClose();
       setIsClosing(false);
       setTranslateX(0);
-    }, 300); // Match CSS transition duration
+    }, 400); // Match CSS transition duration
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -95,7 +95,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
         onTouchEnd={handleTouchEnd}
         style={{
           transform: translateX < 0 ? `translateX(${translateX}px)` : undefined,
-          transition: isDragging ? 'none' : 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), width 0.3s ease'
+          transition: isDragging ? 'none' : 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), width 0.4s ease'
         }}
       >
         <Sidebar collapsed={false} onToggleCollapse={handleClose} />
@@ -115,7 +115,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
           animation: scrim-in 250ms ease-out;
         }
         .mobile-drawer-overlay.closing .mobile-drawer-scrim {
-          animation: scrim-out 300ms ease-in forwards;
+          animation: scrim-out 400ms ease-in forwards;
         }
         @keyframes scrim-in {
           from { opacity: 0; }

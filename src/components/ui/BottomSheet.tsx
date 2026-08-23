@@ -20,6 +20,7 @@ export function BottomSheet({
 }: BottomSheetProps) {
   const [translateY, setTranslateY] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
   const startY = useRef(0);
   const currentY = useRef(0);
   
@@ -27,8 +28,20 @@ export function BottomSheet({
     if (!isOpen) {
       setTranslateY(0);
       setIsDragging(false);
+      setIsClosing(false);
     }
   }, [isOpen]);
+
+  const handleClose = () => {
+    if (isClosing) return;
+    setIsClosing(true);
+    setTranslateY(800); // Slide down smoothly
+    setTimeout(() => {
+      onClose();
+      setIsClosing(false);
+      setTranslateY(0);
+    }, 400); // Smooth transition duration
+  };
 
   const handleTouchStart = (e: React.TouchEvent) => {
     startY.current = e.touches[0].clientY;
@@ -52,7 +65,7 @@ export function BottomSheet({
     
     // Threshold to close is 100px
     if (deltaY > 100) {
-      onClose();
+      handleClose();
     } else {
       setTranslateY(0);
     }
@@ -63,15 +76,15 @@ export function BottomSheet({
   return (
     <>
       <div 
-        className="bottom-sheet__backdrop" 
-        onClick={onClose}
+        className={`bottom-sheet__backdrop ${isClosing ? 'closing' : ''}`}
+        onClick={handleClose}
         aria-hidden="true"
       />
       <div 
         className={`bottom-sheet ${className}`}
         style={{ 
           transform: `translateY(${translateY}px)`,
-          transition: isDragging ? 'none' : 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)'
+          transition: isDragging ? 'none' : 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)'
         }}
         role="dialog"
         aria-modal="true"

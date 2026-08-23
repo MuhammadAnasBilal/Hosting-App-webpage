@@ -18,9 +18,9 @@ export function OrbiChat() {
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Drag-to-close state
   const [translateY, setTranslateY] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
   const startY = useRef(0);
   const currentY = useRef(0);
 
@@ -38,13 +38,24 @@ export function OrbiChat() {
     return () => window.removeEventListener('open-orbi', handleOpen);
   }, []);
 
-  // Reset drag position when panel closes/opens
   useEffect(() => {
     if (!isOpen) {
       setTranslateY(0);
       setIsDragging(false);
+      setIsClosing(false);
     }
   }, [isOpen]);
+
+  const handleClose = () => {
+    if (isClosing) return;
+    setIsClosing(true);
+    setTranslateY(800); // Trigger smooth slide down
+    setTimeout(() => {
+      setIsOpen(false);
+      setIsClosing(false);
+      setTranslateY(0);
+    }, 400);
+  };
 
   const handleTouchStart = (e: React.TouchEvent) => {
     startY.current = e.touches[0].clientY;
@@ -64,7 +75,7 @@ export function OrbiChat() {
     setIsDragging(false);
     const deltaY = currentY.current - startY.current;
     if (deltaY > 100) {
-      setIsOpen(false);
+      handleClose();
     } else {
       setTranslateY(0);
     }
@@ -124,7 +135,8 @@ export function OrbiChat() {
       aria-label="Chat with Orbi"
       style={{
         transform: `translateY(${translateY}px)`,
-        transition: isDragging ? 'none' : 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+        transition: isDragging ? 'none' : 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)',
+        opacity: isClosing ? 0 : 1, // Optional: fade out while sliding down
       }}
     >
       {/* Drag Handle — visible on mobile */}
@@ -145,7 +157,7 @@ export function OrbiChat() {
         <span className="chat-panel__name">Orbi</span>
         <button
           className="chat-panel__close"
-          onClick={() => setIsOpen(false)}
+          onClick={handleClose}
           aria-label="Close chat"
         >
           <X />
