@@ -13,6 +13,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
   const drawerRef = useRef<HTMLDivElement>(null);
   const [translateX, setTranslateX] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
   const startX = useRef(0);
   const currentX = useRef(0);
 
@@ -20,8 +21,20 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
     if (!isOpen) {
       setTranslateX(0);
       setIsDragging(false);
+      setIsClosing(false);
     }
   }, [isOpen]);
+
+  const handleClose = () => {
+    if (isClosing) return;
+    setIsClosing(true);
+    setTranslateX(-500); // Trigger physical slide out via state
+    setTimeout(() => {
+      onClose();
+      setIsClosing(false);
+      setTranslateX(0);
+    }, 300); // Match CSS transition duration
+  };
 
   const handleTouchStart = (e: React.TouchEvent) => {
     startX.current = e.touches[0].clientX;
@@ -44,7 +57,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
     const deltaX = currentX.current - startX.current;
     
     if (deltaX < -50) {
-      onClose(); // Close sidebar
+      handleClose(); // Close sidebar
     } else {
       setTranslateX(0); // Reset visual position
     }
@@ -53,7 +66,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
   useEffect(() => {
     if (!isOpen) return;
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') handleClose();
     };
     document.addEventListener('keydown', handleEscape);
     document.body.style.overflow = 'hidden';
@@ -61,16 +74,16 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
       document.removeEventListener('keydown', handleEscape);
       document.body.style.overflow = '';
     };
-  }, [isOpen, onClose]);
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
   return (
-    <div className="mobile-drawer-overlay" role="dialog" aria-modal="true" aria-label="Navigation menu">
+    <div className={`mobile-drawer-overlay ${isClosing ? 'closing' : ''}`} role="dialog" aria-modal="true" aria-label="Navigation menu">
       {/* Scrim — clicking outside closes */}
       <div
         className="mobile-drawer-scrim"
-        onClick={onClose}
+        onClick={handleClose}
         aria-hidden="true"
       />
       {/* Drawer panel */}
@@ -85,7 +98,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
           transition: isDragging ? 'none' : 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), width 0.3s ease'
         }}
       >
-        <Sidebar collapsed={false} onToggleCollapse={onClose} />
+        <Sidebar collapsed={false} onToggleCollapse={handleClose} />
       </div>
 
       <style>{`
@@ -99,11 +112,18 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
           position: absolute;
           inset: 0;
           background: rgba(0,0,0,0.55);
-          animation: scrim-in 200ms ease-out;
+          animation: scrim-in 250ms ease-out;
+        }
+        .mobile-drawer-overlay.closing .mobile-drawer-scrim {
+          animation: scrim-out 300ms ease-in forwards;
         }
         @keyframes scrim-in {
           from { opacity: 0; }
           to   { opacity: 1; }
+        }
+        @keyframes scrim-out {
+          from { opacity: 1; }
+          to   { opacity: 0; }
         }
         .mobile-drawer {
           position: relative;
