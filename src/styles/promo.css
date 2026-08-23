@@ -25,9 +25,9 @@
 .promo-banner--primary {
   background: linear-gradient(135deg,
     var(--gradient-warm-start) 0%,
-    var(--gradient-warm-mid) 40%,
-    #D4A843 70%,
-    var(--base-card) 100%
+    var(--gradient-warm-mid) 50%,
+    #D4A843 80%,
+    var(--base-card) 120%
   );
 }
 
@@ -80,8 +80,9 @@
 }
 
 .promo-banner__description {
-  font-size: var(--text-sm);
-  color: rgba(14, 11, 9, 0.7);
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  color: rgba(0, 0, 0, 0.75);
   line-height: var(--leading-relaxed);
   max-width: 480px;
 }

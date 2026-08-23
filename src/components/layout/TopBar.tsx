@@ -197,13 +197,6 @@ export function TopBar({ onMenuClick, showHamburger }: TopBarProps) {
                 <Settings size={18} />
                 <span>Settings</span>
               </button>
-              <div className="dropdown-panel__mobile-only">
-                <div className="dropdown-panel__separator" />
-                <button className="dropdown-panel__item" role="menuitem" onClick={toggleTheme}>
-                  {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
-                  <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
-                </button>
-              </div>
               <div className="dropdown-panel__separator" />
               <button className="dropdown-panel__item" role="menuitem">
                 <LogOut size={18} />

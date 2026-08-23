@@ -5,7 +5,7 @@ import {
   Home, Mail, Layers, Package, Globe, AtSign, Server, Inbox,
   Cpu, MoreHorizontal, Network, Zap, Sparkles, Receipt,
   ShoppingCart, FileText, CreditCard, FileCheck, Wallet, Coins,
-  Heart, ChevronDown, ChevronLeft, Plus, Activity, Sun, Moon, Menu
+  Heart, ChevronDown, ChevronLeft, Plus, Activity, Sun, Moon, Menu, ShoppingBag
 } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 import { primaryNavItems, productsGroup, utilityNavItems, billingGroup } from '@/data/mockData';
@@ -54,7 +54,7 @@ export function Sidebar({ collapsed, onToggleCollapse }: SidebarProps) {
       {/* Place new order CTA */}
       <div className="sidebar__cta">
         <button className="sidebar__cta-btn" aria-label="Place new order">
-          <Plus size={18} />
+          <ShoppingBag size={18} className="sidebar__cta-icon" />
           <span className="sidebar__cta-btn-text">Place new order</span>
         </button>
       </div>
@@ -177,9 +177,16 @@ export function Sidebar({ collapsed, onToggleCollapse }: SidebarProps) {
           className="sidebar__theme-toggle"
           onClick={toggleTheme}
           aria-label="Toggle theme"
+          role="switch"
+          aria-checked={theme === 'dark'}
         >
-          {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
-          <span className="sidebar__theme-label">{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+          <div className="sidebar__theme-toggle-left">
+            {theme === 'dark' ? <Moon size={18} /> : <Sun size={18} />}
+            <span className="sidebar__theme-label">{theme === 'dark' ? 'Dark Mode' : 'Light Mode'}</span>
+          </div>
+          <div className={`theme-switch ${theme === 'dark' ? 'theme-switch--active' : ''}`}>
+            <div className="theme-switch__thumb" />
+          </div>
         </button>
         <a className="sidebar__status" href="#" aria-label="Service Status: All systems operational">
           <span className="sidebar__status-dot" aria-hidden="true" />
