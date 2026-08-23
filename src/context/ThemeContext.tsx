@@ -30,11 +30,18 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const setTheme = (newTheme: Theme) => {
+    if (typeof window === 'undefined') return;
+
+    const root = document.documentElement;
+    root.classList.add('theme-transition');
+
     setThemeState(newTheme);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('hosting-theme', newTheme);
-      document.documentElement.setAttribute('data-theme', newTheme);
-    }
+    localStorage.setItem('hosting-theme', newTheme);
+    root.setAttribute('data-theme', newTheme);
+
+    window.setTimeout(() => {
+      root.classList.remove('theme-transition');
+    }, 300);
   };
 
   const toggleTheme = () => {

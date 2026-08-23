@@ -100,6 +100,7 @@ export function TopBar({ onMenuClick, showHamburger }: TopBarProps) {
                 <MessageSquare size={18} />
                 <span>Live chat</span>
               </button>
+              <div className="dropdown-panel__separator" />
               <button className="dropdown-panel__item" role="menuitem">
                 <BookOpen size={18} />
                 <span>Knowledge base</span>

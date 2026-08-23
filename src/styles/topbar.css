@@ -233,9 +233,9 @@
   background: var(--primary);
   color: var(--primary-foreground);
   font-weight: var(--weight-semibold);
-  border-radius: 0;
-  margin: 0;
-  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  margin: var(--space-2);
+  padding: var(--space-2) var(--space-4);
 }
 
 .dropdown-panel__item--highlight:hover {
