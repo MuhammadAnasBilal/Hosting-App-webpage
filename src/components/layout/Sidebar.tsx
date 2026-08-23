@@ -5,8 +5,9 @@ import {
   Home, Mail, Layers, Package, Globe, AtSign, Server, Inbox,
   Cpu, MoreHorizontal, Network, Zap, Sparkles, Receipt,
   ShoppingCart, FileText, CreditCard, FileCheck, Wallet, Coins,
-  Heart, ChevronDown, ChevronLeft, Plus, Activity
+  Heart, ChevronDown, ChevronLeft, Plus, Activity, Sun, Moon, Menu
 } from 'lucide-react';
+import { useTheme } from '@/context/ThemeContext';
 import { primaryNavItems, productsGroup, utilityNavItems, billingGroup } from '@/data/mockData';
 import '@/styles/sidebar.css';
 
@@ -28,6 +29,7 @@ interface SidebarProps {
 }
 
 export function Sidebar({ collapsed, onToggleCollapse }: SidebarProps) {
+  const { theme, toggleTheme } = useTheme();
   const [productsOpen, setProductsOpen] = useState(false);
   const [billingOpen, setBillingOpen] = useState(false);
   const [activeId, setActiveId] = useState('home');
@@ -39,11 +41,14 @@ export function Sidebar({ collapsed, onToggleCollapse }: SidebarProps) {
     >
       {/* Logo */}
       <div className="sidebar__logo">
+        <button className="sidebar__mobile-close" onClick={onToggleCollapse} aria-label="Close menu">
+          <Menu size={22} />
+        </button>
         <svg className="sidebar__logo-icon" viewBox="0 0 32 32" fill="none">
           <rect width="32" height="32" rx="8" fill="currentColor" />
           <path d="M10 10v12 M10 16h6 M16 10v12 M22 14v8 M22 10v2" stroke="var(--base-card)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
-        <span className="sidebar__logo-text">Hostin</span>
+        <span className="sidebar__logo-text">Host-IN</span>
       </div>
 
       {/* Place new order CTA */}
@@ -168,6 +173,14 @@ export function Sidebar({ collapsed, onToggleCollapse }: SidebarProps) {
 
       {/* Footer — pinned */}
       <div className="sidebar__footer">
+        <button
+          className="sidebar__theme-toggle"
+          onClick={toggleTheme}
+          aria-label="Toggle theme"
+        >
+          {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+          <span className="sidebar__theme-label">{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+        </button>
         <a className="sidebar__status" href="#" aria-label="Service Status: All systems operational">
           <span className="sidebar__status-dot" aria-hidden="true" />
           <span className="sidebar__status-label">Service Status</span>

@@ -1,13 +1,13 @@
 'use client';
 
-import { Ticket, Plus, Menu } from 'lucide-react';
+import { Ticket, ShoppingBag } from 'lucide-react';
 
 export function WelcomeHeader() {
   return (
     <div className="welcome-header">
       <div className="welcome-header__left">
         <h1 className="welcome-header__title">
-          Welcome back, <span className="welcome-header__name">Anas Bilal</span>
+          Welcome <span className="welcome-header__name">Anas</span>
         </h1>
       </div>
       <div className="welcome-header__actions">
@@ -16,7 +16,7 @@ export function WelcomeHeader() {
           <span className="welcome-header__btn-text">Manage tickets</span>
         </button>
         <button className="welcome-header__btn welcome-header__btn--primary">
-          <Plus size={20} />
+          <ShoppingBag size={20} />
           <span className="welcome-header__btn-text">Place new order</span>
         </button>
       </div>

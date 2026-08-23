@@ -12,8 +12,9 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
 
 export function StatStrip() {
   return (
-    <div className="stat-strip" role="list" aria-label="Product statistics">
-      {statItems.map(item => {
+    <div className="stat-strip-wrapper">
+      <div className="stat-strip" role="list" aria-label="Product statistics">
+        {statItems.map(item => {
         const Icon = iconMap[item.icon] || Globe;
         return (
           <div key={item.id} className="stat-strip__item" role="listitem">
@@ -25,6 +26,8 @@ export function StatStrip() {
           </div>
         );
       })}
+      </div>
+      <div className="stat-strip__fade" aria-hidden="true" />
     </div>
   );
 }

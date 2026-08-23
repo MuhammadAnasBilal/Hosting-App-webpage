@@ -52,7 +52,7 @@ export function TopBar({ onMenuClick, showHamburger }: TopBarProps) {
             <rect width="32" height="32" rx="8" fill="currentColor" />
             <path d="M10 10v12 M10 16h6 M16 10v12 M22 14v8 M22 10v2" stroke="var(--base-card)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-          <span className="topbar__mobile-logo-text">Hostin</span>
+          <span className="topbar__mobile-logo-text">Host-IN</span>
         </div>
       )}
 
@@ -93,7 +93,7 @@ export function TopBar({ onMenuClick, showHamburger }: TopBarProps) {
         </div>
 
         {/* Help */}
-        <div style={{ position: 'relative' }} ref={helpRef} className="topbar__hide-on-mobile">
+        <div style={{ position: 'relative' }} ref={helpRef}>
           <button
             className="topbar__icon-btn"
             onClick={() => toggleDropdown('help')}
@@ -199,10 +199,6 @@ export function TopBar({ onMenuClick, showHamburger }: TopBarProps) {
               </button>
               <div className="dropdown-panel__mobile-only">
                 <div className="dropdown-panel__separator" />
-                <button className="dropdown-panel__item" role="menuitem">
-                  <HelpCircle size={18} />
-                  <span>Help & Support</span>
-                </button>
                 <button className="dropdown-panel__item" role="menuitem" onClick={toggleTheme}>
                   {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
                   <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>

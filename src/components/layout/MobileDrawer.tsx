@@ -37,17 +37,6 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
       />
       {/* Drawer panel */}
       <div className="mobile-drawer" ref={drawerRef}>
-        {/*
-          Close button is injected INSIDE the sidebar header area via CSS absolute positioning
-          so it sits right where the user's thumb already is (top-left, beside the logo).
-        */}
-        <button
-          className="mobile-drawer__close"
-          onClick={onClose}
-          aria-label="Close navigation"
-        >
-          <X size={20} />
-        </button>
         <Sidebar collapsed={false} onToggleCollapse={onClose} />
       </div>
 
@@ -91,30 +80,8 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
           height: 100%;
           border-right: none;
           position: static;
-          padding-top: 56px; /* leave room for the close btn row */
-        }
         .mobile-drawer .sidebar__collapse-btn {
           display: none;
-        }
-        /* Close button floats at top-right inside the drawer header area */
-        .mobile-drawer__close {
-          position: absolute;
-          top: 0;
-          right: 0;
-          width: 56px;
-          height: 56px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border-bottom: 1px solid var(--border);
-          color: var(--base-muted-foreground);
-          cursor: pointer;
-          z-index: 10;
-          transition: background 150ms, color 150ms;
-        }
-        .mobile-drawer__close:hover {
-          background: var(--ghost-hover);
-          color: var(--base-foreground);
         }
       `}</style>
     </div>
