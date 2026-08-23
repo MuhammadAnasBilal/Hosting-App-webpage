@@ -113,9 +113,10 @@
   display: flex;
   align-items: center;
   gap: var(--space-3);
+  /* Full-width: no horizontal margin, padding instead */
   padding: var(--space-2) var(--space-5);
-  margin: 1px var(--space-2);
-  border-radius: var(--radius-sm);
+  margin: 1px 0;
+  border-radius: 0;
   color: var(--base-muted-foreground);
   font-size: var(--text-base);
   font-weight: var(--weight-medium);
@@ -124,6 +125,7 @@
   position: relative;
   white-space: nowrap;
   min-height: 40px;
+  width: 100%;
 }
 
 .nav-item:hover {
@@ -172,10 +174,11 @@
   transition: opacity 80ms ease-out;
 }
 
+/* Collapsed: icon perfectly centered in full sidebar width */
 .sidebar--collapsed .nav-item {
   justify-content: center;
-  padding: var(--space-2) var(--space-3);
-  margin: 1px var(--space-1);
+  padding: var(--space-2) 0;
+  margin: 1px 0;
 }
 
 /* --- Nav group (collapsible) --- */
@@ -258,7 +261,7 @@
 .nav-separator {
   height: 1px;
   background: var(--border);
-  margin: var(--space-2) var(--space-4);
+  margin: var(--space-2) 0;
 }
 
 /* --- Refer a Friend (special item) --- */
@@ -381,7 +384,8 @@
 
   .sidebar .nav-item {
     justify-content: center;
-    padding: var(--space-2) var(--space-3);
+    padding: var(--space-2) 0;
+    margin: 1px 0;
   }
 
   .sidebar .sidebar__cta-btn {
@@ -397,7 +401,8 @@
   }
 
   .sidebar .nav-group__items .nav-item {
-    padding-left: var(--space-3);
+    padding-left: 0;
+    justify-content: center;
   }
 
   .sidebar__collapse-btn {

@@ -12,17 +12,13 @@ interface MobileDrawerProps {
 export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
   const drawerRef = useRef<HTMLDivElement>(null);
 
-  // Focus trap & escape key
   useEffect(() => {
     if (!isOpen) return;
-
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
     };
-
     document.addEventListener('keydown', handleEscape);
     document.body.style.overflow = 'hidden';
-
     return () => {
       document.removeEventListener('keydown', handleEscape);
       document.body.style.overflow = '';
@@ -33,23 +29,25 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
 
   return (
     <div className="mobile-drawer-overlay" role="dialog" aria-modal="true" aria-label="Navigation menu">
-      {/* Scrim */}
+      {/* Scrim — clicking outside closes */}
       <div
         className="mobile-drawer-scrim"
         onClick={onClose}
         aria-hidden="true"
       />
-      {/* Drawer */}
+      {/* Drawer panel */}
       <div className="mobile-drawer" ref={drawerRef}>
-        <div className="mobile-drawer__close-row">
-          <button
-            className="mobile-drawer__close"
-            onClick={onClose}
-            aria-label="Close navigation"
-          >
-            <X size={20} />
-          </button>
-        </div>
+        {/*
+          Close button is injected INSIDE the sidebar header area via CSS absolute positioning
+          so it sits right where the user's thumb already is (top-left, beside the logo).
+        */}
+        <button
+          className="mobile-drawer__close"
+          onClick={onClose}
+          aria-label="Close navigation"
+        >
+          <X size={20} />
+        </button>
         <Sidebar collapsed={false} onToggleCollapse={onClose} />
       </div>
 
@@ -57,14 +55,18 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
         .mobile-drawer-overlay {
           position: fixed;
           inset: 0;
-          z-index: 100;
+          z-index: 200;
           display: flex;
         }
         .mobile-drawer-scrim {
           position: absolute;
           inset: 0;
-          background: var(--overlay);
+          background: rgba(0,0,0,0.55);
           animation: scrim-in 200ms ease-out;
+        }
+        @keyframes scrim-in {
+          from { opacity: 0; }
+          to   { opacity: 1; }
         }
         .mobile-drawer {
           position: relative;
@@ -79,30 +81,35 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
           flex-direction: column;
           overflow: hidden;
         }
+        @keyframes slide-in-left {
+          from { transform: translateX(-100%); }
+          to   { transform: translateX(0); }
+        }
         .mobile-drawer .sidebar {
           display: flex !important;
           width: 100% !important;
           height: 100%;
           border-right: none;
           position: static;
+          padding-top: 56px; /* leave room for the close btn row */
         }
         .mobile-drawer .sidebar__collapse-btn {
           display: none;
         }
-        .mobile-drawer__close-row {
-          display: flex;
-          justify-content: flex-end;
-          padding: var(--space-2) var(--space-3);
-          border-bottom: 1px solid var(--border);
-        }
+        /* Close button floats at top-right inside the drawer header area */
         .mobile-drawer__close {
+          position: absolute;
+          top: 0;
+          right: 0;
+          width: 56px;
+          height: 56px;
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 32px;
-          height: 32px;
-          border-radius: var(--radius-sm);
+          border-bottom: 1px solid var(--border);
           color: var(--base-muted-foreground);
+          cursor: pointer;
+          z-index: 10;
           transition: background 150ms, color 150ms;
         }
         .mobile-drawer__close:hover {

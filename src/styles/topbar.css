@@ -248,7 +248,7 @@
 }
 
 .dropdown-panel__item--highlight:hover {
-  filter: brightness(0.92);
+  opacity: 0.88;
 }
 
 .dropdown-panel__item--highlight svg {
