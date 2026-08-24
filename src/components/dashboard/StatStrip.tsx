@@ -1,5 +1,3 @@
-'use client';
-
 import {
   AtSign, Server, Globe, Inbox, Cpu, MoreHorizontal
 } from 'lucide-react';

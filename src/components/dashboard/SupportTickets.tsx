@@ -1,5 +1,3 @@
-'use client';
-
 import { SmilePlus, ExternalLink } from 'lucide-react';
 import '@/styles/support.css';
 

@@ -483,3 +483,25 @@
     display: none;
   }
 }
+
+/* --- Dropdown Anchors --- */
+.topbar__dropdown-anchor {
+  position: relative;
+}
+
+.reward-panel-body {
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.reward-panel-body__text {
+  font-size: var(--text-sm);
+  color: var(--base-muted-foreground);
+  line-height: var(--leading-relaxed);
+}
+
+.reward-panel-body__text strong {
+  color: var(--base-foreground);
+}

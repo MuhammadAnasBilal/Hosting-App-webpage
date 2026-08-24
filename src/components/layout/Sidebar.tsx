@@ -1,27 +1,54 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import {
   Home, Mail, Layers, Package, Globe, AtSign, Server, Inbox,
   Cpu, MoreHorizontal, Network, Zap, Sparkles, Receipt,
   ShoppingCart, FileText, CreditCard, FileCheck, Wallet, Coins,
-  Heart, ChevronDown, ChevronLeft, Plus, Activity, Sun, Moon, Menu, ShoppingBag
+  Heart, ChevronDown, ChevronLeft, Sun, Moon, Menu, ShoppingBag,
 } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 import { primaryNavItems, productsGroup, utilityNavItems, billingGroup } from '@/data/mockData';
+import type { NavItem } from '@/types';
 import '@/styles/sidebar.css';
 
-/* Icon mapping — resolves string names to Lucide components */
+// Maps icon string names (from mockData) to Lucide components
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Home, Mail, Layers, Package, Globe, AtSign, Server, Inbox,
   Cpu, MoreHorizontal, Network, Zap, Sparkles, Receipt,
-  ShoppingCart, FileText, CreditCard, FileCheck, Wallet, Coins,
-  Heart, ChevronDown, Plus, Activity, MapPin: AtSign, Phone: Wallet,
+  ShoppingCart, FileText, CreditCard, FileCheck, Wallet, Coins, Heart,
 };
 
 function getIcon(name: string) {
-  return iconMap[name] || Package;
+  return iconMap[name] ?? Package; // fallback to Package if name not found
 }
+
+// ─── Shared nav item button ────────────────────────────────────────────────
+// Extracted to avoid repeating the same render pattern for every nav section.
+
+interface NavItemButtonProps {
+  item: NavItem;
+  activeId: string;
+  collapsed: boolean;
+  onSelect: (id: string) => void;
+}
+
+function NavItemButton({ item, activeId, collapsed, onSelect }: NavItemButtonProps) {
+  const Icon = getIcon(item.icon);
+  return (
+    <button
+      className={`nav-item${activeId === item.id ? ' nav-item--active' : ''}`}
+      onClick={() => onSelect(item.id)}
+      title={collapsed ? item.label : undefined} // show tooltip when collapsed
+      aria-current={activeId === item.id ? 'page' : undefined}
+    >
+      <Icon className="nav-item__icon" />
+      <span className="nav-item__label">{item.label}</span>
+    </button>
+  );
+}
+
+// ─── Sidebar ───────────────────────────────────────────────────────────────
 
 interface SidebarProps {
   collapsed: boolean;
@@ -36,10 +63,10 @@ export function Sidebar({ collapsed, onToggleCollapse }: SidebarProps) {
 
   return (
     <aside
-      className={`sidebar ${collapsed ? 'sidebar--collapsed' : ''}`}
+      className={`sidebar${collapsed ? ' sidebar--collapsed' : ''}`}
       aria-label="Main navigation"
     >
-      {/* Logo */}
+      {/* Logo row — hamburger visible on mobile only */}
       <div className="sidebar__logo">
         <button className="sidebar__mobile-close" onClick={onToggleCollapse} aria-label="Close menu">
           <Menu size={22} />
@@ -59,108 +86,53 @@ export function Sidebar({ collapsed, onToggleCollapse }: SidebarProps) {
         </button>
       </div>
 
-      {/* Scrollable nav */}
+      {/* Scrollable navigation */}
       <nav className="sidebar__nav">
-        {/* Primary items */}
-        {primaryNavItems.map(item => {
-          const Icon = getIcon(item.icon);
-          return (
-            <button
-              key={item.id}
-              className={`nav-item ${activeId === item.id ? 'nav-item--active' : ''}`}
-              onClick={() => setActiveId(item.id)}
-              title={collapsed ? item.label : undefined}
-              aria-current={activeId === item.id ? 'page' : undefined}
-            >
-              <Icon className="nav-item__icon" />
-              <span className="nav-item__label">{item.label}</span>
-            </button>
-          );
-        })}
+
+        {primaryNavItems.map(item => (
+          <NavItemButton key={item.id} item={item} activeId={activeId} collapsed={collapsed} onSelect={setActiveId} />
+        ))}
 
         <div className="nav-separator" />
 
-        {/* Products & Services group */}
-        <div className={`nav-group ${productsOpen ? 'nav-group--open' : ''}`}>
-          <button
-            className="nav-group__header"
-            onClick={() => setProductsOpen(p => !p)}
-            aria-expanded={productsOpen}
-          >
+        {/* Products & Services collapsible group */}
+        <div className={`nav-group${productsOpen ? ' nav-group--open' : ''}`}>
+          <button className="nav-group__header" onClick={() => setProductsOpen(o => !o)} aria-expanded={productsOpen}>
             <Layers className="nav-group__header-icon" />
             <span className="nav-group__label">{productsGroup.label}</span>
             <ChevronDown className="nav-group__chevron" />
           </button>
           <div className="nav-group__items" role="group">
-            {productsGroup.items.map(item => {
-              const Icon = getIcon(item.icon);
-              return (
-                <button
-                  key={item.id}
-                  className={`nav-item ${activeId === item.id ? 'nav-item--active' : ''}`}
-                  onClick={() => setActiveId(item.id)}
-                  title={collapsed ? item.label : undefined}
-                >
-                  <Icon className="nav-item__icon" />
-                  <span className="nav-item__label">{item.label}</span>
-                </button>
-              );
-            })}
+            {productsGroup.items.map(item => (
+              <NavItemButton key={item.id} item={item} activeId={activeId} collapsed={collapsed} onSelect={setActiveId} />
+            ))}
           </div>
         </div>
 
         <div className="nav-separator" />
 
-        {/* Utility items */}
-        {utilityNavItems.map(item => {
-          const Icon = getIcon(item.icon);
-          return (
-            <button
-              key={item.id}
-              className={`nav-item ${activeId === item.id ? 'nav-item--active' : ''}`}
-              onClick={() => setActiveId(item.id)}
-              title={collapsed ? item.label : undefined}
-            >
-              <Icon className="nav-item__icon" />
-              <span className="nav-item__label">{item.label}</span>
-            </button>
-          );
-        })}
+        {utilityNavItems.map(item => (
+          <NavItemButton key={item.id} item={item} activeId={activeId} collapsed={collapsed} onSelect={setActiveId} />
+        ))}
 
         <div className="nav-separator" />
 
-        {/* Billing group */}
-        <div className={`nav-group ${billingOpen ? 'nav-group--open' : ''}`}>
-          <button
-            className="nav-group__header"
-            onClick={() => setBillingOpen(b => !b)}
-            aria-expanded={billingOpen}
-          >
+        {/* Billing collapsible group */}
+        <div className={`nav-group${billingOpen ? ' nav-group--open' : ''}`}>
+          <button className="nav-group__header" onClick={() => setBillingOpen(o => !o)} aria-expanded={billingOpen}>
             <Receipt className="nav-group__header-icon" />
             <span className="nav-group__label">{billingGroup.label}</span>
             <ChevronDown className="nav-group__chevron" />
           </button>
           <div className="nav-group__items" role="group">
-            {billingGroup.items.map(item => {
-              const Icon = getIcon(item.icon);
-              return (
-                <button
-                  key={item.id}
-                  className={`nav-item ${activeId === item.id ? 'nav-item--active' : ''}`}
-                  onClick={() => setActiveId(item.id)}
-                  title={collapsed ? item.label : undefined}
-                >
-                  <Icon className="nav-item__icon" />
-                  <span className="nav-item__label">{item.label}</span>
-                </button>
-              );
-            })}
+            {billingGroup.items.map(item => (
+              <NavItemButton key={item.id} item={item} activeId={activeId} collapsed={collapsed} onSelect={setActiveId} />
+            ))}
           </div>
         </div>
 
         <div className="nav-separator" />
 
-        {/* Refer a friend */}
         <button
           className="nav-item nav-item--refer"
           onClick={() => setActiveId('refer')}
@@ -169,22 +141,25 @@ export function Sidebar({ collapsed, onToggleCollapse }: SidebarProps) {
           <Heart className="nav-item__icon" />
           <span className="nav-item__label">Refer-a-Friend</span>
         </button>
+
       </nav>
 
-      {/* Footer — pinned */}
+      {/* Footer — theme toggle + service status, pinned to bottom */}
       <div className="sidebar__footer">
         <button
           className="sidebar__theme-toggle"
           onClick={toggleTheme}
-          aria-label="Toggle theme"
           role="switch"
           aria-checked={theme === 'dark'}
+          aria-label="Toggle theme"
         >
           <div className="sidebar__theme-toggle-left">
             {theme === 'dark' ? <Moon size={18} /> : <Sun size={18} />}
-            <span className="sidebar__theme-label">{theme === 'dark' ? 'Dark Mode' : 'Light Mode'}</span>
+            <span className="sidebar__theme-label">
+              {theme === 'dark' ? 'Dark Mode' : 'Light Mode'}
+            </span>
           </div>
-          <div className={`theme-switch ${theme === 'dark' ? 'theme-switch--active' : ''}`}>
+          <div className={`theme-switch${theme === 'dark' ? ' theme-switch--active' : ''}`}>
             <div className="theme-switch__thumb" />
           </div>
         </button>
@@ -194,7 +169,7 @@ export function Sidebar({ collapsed, onToggleCollapse }: SidebarProps) {
         </a>
       </div>
 
-      {/* Collapse toggle */}
+      {/* Collapse/expand toggle — desktop only, hidden on mobile */}
       <button
         className="sidebar__collapse-btn"
         onClick={onToggleCollapse}

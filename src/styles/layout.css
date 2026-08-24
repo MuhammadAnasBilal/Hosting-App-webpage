@@ -57,3 +57,53 @@
   }
 }
 
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-6);
+  border-top: 1px solid var(--border);
+  background: var(--base-card);
+  margin-top: auto;
+}
+
+.footer__links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.footer__link {
+  font-size: var(--text-xs);
+  color: var(--base-muted-foreground);
+  transition: color var(--transition-fast);
+}
+
+.footer__link:hover {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.footer__divider {
+  color: var(--border);
+  font-size: var(--text-xs);
+}
+
+.footer__version {
+  font-size: var(--text-xs);
+  color: var(--base-subtle-foreground);
+  font-family: monospace;
+}
+
+@media (max-width: 639px) {
+  .footer {
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    text-align: center;
+  }
+}

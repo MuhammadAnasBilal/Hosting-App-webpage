@@ -1,5 +1,3 @@
-'use client';
-
 import { BookOpen, Terminal, Puzzle, ChevronRight, Sparkles } from 'lucide-react';
 import { helpArticles } from '@/data/mockData';
 import '@/styles/support.css';

@@ -1,7 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { X } from 'lucide-react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Sidebar } from './Sidebar';
 
 interface MobileDrawerProps {
@@ -17,6 +16,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
   const startX = useRef(0);
   const currentX = useRef(0);
 
+  // Reset all state when the drawer closes externally
   useEffect(() => {
     if (!isOpen) {
       setTranslateX(0);
@@ -25,17 +25,29 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
     }
   }, [isOpen]);
 
-  const handleClose = () => {
+  // Animate the drawer sliding out, then fire onClose
+  const handleClose = useCallback(() => {
     if (isClosing) return;
     setIsClosing(true);
-    setTranslateX(-500); // Trigger physical slide out via state
-    setTimeout(() => {
-      onClose();
-      setIsClosing(false);
-      setTranslateX(0);
-    }, 400); // Match CSS transition duration
-  };
+    setTranslateX(-500);
+    setTimeout(onClose, 400); // matches the CSS transition duration
+  }, [isClosing, onClose]);
 
+  // Close on Escape key + lock body scroll while open
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') handleClose();
+    };
+    document.addEventListener('keydown', onKeyDown);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      document.body.style.overflow = '';
+    };
+  }, [isOpen, handleClose]);
+
+  // Swipe left to close
   const handleTouchStart = (e: React.TouchEvent) => {
     startX.current = e.touches[0].clientX;
     currentX.current = e.touches[0].clientX;
@@ -44,114 +56,46 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
 
   const handleTouchMove = (e: React.TouchEvent) => {
     currentX.current = e.touches[0].clientX;
-    const deltaX = currentX.current - startX.current;
-    
-    // Only allow dragging left to close
-    if (deltaX < 0) {
-      setTranslateX(deltaX);
-    }
+    const delta = currentX.current - startX.current;
+    if (delta < 0) setTranslateX(delta); // only drag left
   };
 
   const handleTouchEnd = () => {
     setIsDragging(false);
-    const deltaX = currentX.current - startX.current;
-    
-    if (deltaX < -50) {
-      handleClose(); // Close sidebar
+    const delta = currentX.current - startX.current;
+    if (delta < -50) {
+      handleClose();
     } else {
-      setTranslateX(0); // Reset visual position
+      setTranslateX(0); // snap back if not dragged far enough
     }
   };
-
-  useEffect(() => {
-    if (!isOpen) return;
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') handleClose();
-    };
-    document.addEventListener('keydown', handleEscape);
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.removeEventListener('keydown', handleEscape);
-      document.body.style.overflow = '';
-    };
-  }, [isOpen]);
 
   if (!isOpen) return null;
 
   return (
-    <div className={`mobile-drawer-overlay ${isClosing ? 'closing' : ''}`} role="dialog" aria-modal="true" aria-label="Navigation menu">
-      {/* Scrim — clicking outside closes */}
+    <div
+      className={`mobile-drawer-overlay${isClosing ? ' closing' : ''}`}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Navigation menu"
+    >
+      {/* Dark backdrop — tap outside to close */}
+      <div className="mobile-drawer-scrim" onClick={handleClose} aria-hidden="true" />
+
+      {/* Sidebar panel */}
       <div
-        className="mobile-drawer-scrim"
-        onClick={handleClose}
-        aria-hidden="true"
-      />
-      {/* Drawer panel */}
-      <div 
-        className="mobile-drawer" 
+        className="mobile-drawer"
         ref={drawerRef}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
         style={{
           transform: translateX < 0 ? `translateX(${translateX}px)` : undefined,
-          transition: isDragging ? 'none' : 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), width 0.4s ease'
+          transition: isDragging ? 'none' : 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)',
         }}
       >
         <Sidebar collapsed={false} onToggleCollapse={handleClose} />
       </div>
-
-      <style>{`
-        .mobile-drawer-overlay {
-          position: fixed;
-          inset: 0;
-          z-index: 200;
-          display: flex;
-        }
-        .mobile-drawer-scrim {
-          position: absolute;
-          inset: 0;
-          background: rgba(0,0,0,0.55);
-          animation: scrim-in 250ms ease-out;
-        }
-        .mobile-drawer-overlay.closing .mobile-drawer-scrim {
-          animation: scrim-out 400ms ease-in forwards;
-        }
-        @keyframes scrim-in {
-          from { opacity: 0; }
-          to   { opacity: 1; }
-        }
-        @keyframes scrim-out {
-          from { opacity: 1; }
-          to   { opacity: 0; }
-        }
-        .mobile-drawer {
-          position: relative;
-          width: 280px;
-          max-width: 85vw;
-          height: 100%;
-          background: var(--base-card);
-          border-right: 1px solid var(--border);
-          animation: slide-in-left 250ms cubic-bezier(0.4, 0, 0.2, 1);
-          z-index: 1;
-          display: flex;
-          flex-direction: column;
-          overflow: hidden;
-        }
-        @keyframes slide-in-left {
-          from { transform: translateX(-100%); }
-          to   { transform: translateX(0); }
-        }
-        .mobile-drawer .sidebar {
-          display: flex !important;
-          width: 100% !important;
-          height: 100%;
-          border-right: none;
-          position: static;
-        .mobile-drawer .sidebar__collapse-btn {
-          display: none;
-        }
-      `}</style>
     </div>
   );
 }

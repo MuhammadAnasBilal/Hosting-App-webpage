@@ -63,6 +63,5 @@ export interface DropdownItem {
   onClick?: () => void;
 }
 
-export type Theme = 'dark' | 'light';
-export type SidebarState = 'expanded' | 'collapsed';
-export type TodoTab = 'product' | 'account';
+export type Theme    = 'dark' | 'light';
+export type TodoTab  = 'product' | 'account';
