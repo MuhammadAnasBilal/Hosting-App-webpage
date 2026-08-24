@@ -477,6 +477,7 @@
   .dropdown-panel__grabber {
     display: none;
   }
+} /* end @media (max-width: 639px) */
 
 @media (max-width: 1023px) {
   .topbar__support-pin {
